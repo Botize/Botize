@@ -62,11 +62,11 @@ g. Create one method for each function (trigger/action) that you want to be expo
 - The method name is *trigger\_(trigger id)* or *action\_(action id)*. See the Botize API documentation for details on the allowed characters and lengths for the function identifiers. 
 - The method has one input parameter of type *BTZ\_FunctionInputData*.
 - The method must return an instance of *BTZ\_FunctionOutputData*, or if something goes wrong, an instance of *BTZ\_HttpErrorResult*.
-- The method MUST NOT throw errors of eceptions. All unexpected errors or exceptions should be caught and an instance of *BTZ\_HttpErrorResult* with a code of 500 should be returned.
+- The method MUST NOT throw errors of exceptions. All unexpected errors or exceptions should be caught and an instance of *BTZ\_HttpErrorResult* with a code of 500 should be returned.
 
 h. If your application class will supply the images via the get\_image command, override the *getImagesPath* method so that it returns null, and implement the getImage method appropriately. See the Botize API documentation for a list of the required images.
 
-i. If your application class will NOT supply the images via the get\_image command, add a folder named as the value returned by the getImagesPath method of your class (the default name is "images") to the folder where the application class file is placed, and place the image files in this folder. See the Botie API documentation for a list of the required images.
+i. If your application class will NOT supply the images via the get\_image command, add a folder named as the value returned by the getImagesPath method of your class (the default name is "images") to the folder where the application class file is placed, and place the image files in this folder. See the Botize API documentation for a list of the required images.
 
 j. If needed, add more files to the folder where the application class file is placed (such as additional code files, data files, or anything else that your application may need).
 
