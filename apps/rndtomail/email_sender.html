@@ -1,0 +1,33 @@
+<!--
+Just for testing, this file is not used by the app.
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+        
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body>
+        <form>
+            <script type="text/javascript">
+                function buttonClick() {
+                    $(document.body).toggleClass("wait");
+                    alert('mola');
+                    return false;
+                }
+            </script>
+            <style type="text/css">
+                body.wait, body.wait *{
+                    cursor: wait;   
+                }
+            </style>
+            {{from}}:<br/><input type="text" name="from"/><br/>
+            {{to}}:<br/><input type="text" name="to"/><br/>
+            {{subject}}:<br/><input type="text" name="subject"/><br/>
+            {{body}}:<br/><textarea name="sentences" cols="40" rows="10"></textarea><br/>
+            <input type="button" onclick="buttonClick(); return false;" value="{{send_test_email}}"/>
+        </form>
+    </body>
+</html>
