@@ -391,6 +391,7 @@ abstract class BTZ_AppBase {
         foreach($languages as $language) {
             $info->texts->$language = new stdClass();
             $info->texts->$language->title = $this->getAppTitle($language);
+            $info->texts->$language->description = $this->getAppDescription($language);
         }
         
         $imagesPath = $this->getImagesPath();
