@@ -453,9 +453,11 @@ abstract class BTZ_AppBase {
             if($form) {
                 $info->texts->$language->form = new stdClass();
                 $formTexts = $this->getFunctionFormTexts($info->id, $language);
-                foreach($formTexts as $key=>$value) {
-                    $info->texts->$language->form->$key = $value;
-                }
+                if (count($formTexts)>0) {
+	                foreach($formTexts as $key=>$value) {
+	                    $info->texts->$language->form->$key = $value;
+	                }
+	            }
             }
             if(is_array($output_vars)) {
                 $info->texts->$language->output_vars = new stdClass();
