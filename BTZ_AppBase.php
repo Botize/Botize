@@ -41,11 +41,22 @@ abstract class BTZ_AppBase {
      * @param string $language Language code
      * @return string Application title in the specified language
      */
-    protected function getAppTitle($language) {
-        return getAppIdentifier();
-    }
-    
-    
+	protected function getAppTitle($language) {
+	    return getAppTitle();
+	}
+
+
+	/**
+	 * Gets the application web site.
+	 * 
+	 * @param string $language Language code
+	 * @return string Application title in the specified language
+	 */
+	protected function getAppWeb() {
+	    return getAppWeb();
+	}
+
+
     /**
      * Gets the Botize API version the application expectes to interact with.
      *  
@@ -383,6 +394,7 @@ abstract class BTZ_AppBase {
         $info = new stdClass();
         $info->app = $this->getAppIdentifier();
         $info->botize_api_version = $this->getSupportedApiVersion();
+        $info->web = $this->getAppWeb();        
         $info->functions_count = $myFunctionCount;
         $info->user_auth_mode = $this->getUserAuthMode();
         
@@ -453,6 +465,7 @@ abstract class BTZ_AppBase {
             if($form) {
                 $info->texts->$language->form = new stdClass();
                 $formTexts = $this->getFunctionFormTexts($info->id, $language);
+                
                 if (count($formTexts)>0) {
 	                foreach($formTexts as $key=>$value) {
 	                    $info->texts->$language->form->$key = $value;
@@ -617,6 +630,7 @@ abstract class BTZ_AppBase {
          }
          
          $result = $this->beginAuthenticateUser($data->callback);
+         
          if($result instanceof BTZ_HttpErrorResult) {
              return $result;
          } else if(!($result instanceof BTZ_BeginAuthenticateUserOutputData)) {
@@ -658,18 +672,19 @@ abstract class BTZ_AppBase {
          }
          
          $result = $this->endAuthenticateUser((array)$data->service_data, $saved_temp_data);
+         
          if($result instanceof BTZ_HttpErrorResult) {
              return $result;
          } else if(!($result instanceof BTZ_EndAuthenticateUserOutputData)) {
-             return new BTZ_HttpErrorResult(500, "'beginAuthenticateUser' returned invalid result type");
+             return new BTZ_HttpErrorResult(500, "'endAuthenticateUser' returned invalid result type");
          }
          
          $result->valid_credentials = (bool)$result->valid_credentials;
          if($result->valid_credentials) {
              if(!$result->user_id) {
-                return new BTZ_HttpErrorResult(500, "'beginAuthenticateUser' returned empty user id");
+                return new BTZ_HttpErrorResult(500, "'endAuthenticateUser' returned empty user id");
              } else if(is_array($result->user_id) || is_object($result->user_id)) {
-                return new BTZ_HttpErrorResult(500, "'beginAuthenticateUser' returned array or object as user id");
+                return new BTZ_HttpErrorResult(500, "'endAuthenticateUser' returned array or object as user id");
              }
          }
          if($result->auth_data_to_save) {
@@ -703,14 +718,6 @@ abstract class BTZ_AppBase {
          
          if(!property_exists($data, "language")) {
              return new BTZ_HttpErrorResult(400, "language missing in data");
-         }
-         
-         if(!property_exists($data, "form_data")) {
-             return new BTZ_HttpErrorResult(400, "form_data missing in data");
-         }
-         
-         if(!is_object($data->form_data)) {
-             return new BTZ_HttpErrorResult(400, "form_data is a scalar value, must be an array");
          }
          
          if(property_exists($data, 'trigger_output_vars') && !is_object($data->trigger_output_vars)) {
